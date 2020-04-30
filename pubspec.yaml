@@ -76,3 +76,12 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: fonts/montserrat/Montserrat-Regular.otf
+        - asset: fonts/montserrat/Montserrat-Italic.otf
+          style: italic
+        - asset: fonts/montserrat/Montserrat-Bold.otf
+          weight: 700
