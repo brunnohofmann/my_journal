@@ -15,5 +15,6 @@ Map<int, Color> color =
 };
 
 final MaterialColor primaryColor = MaterialColor(0xff89B7E3, color);
-final Color secondaryColor = Color(0xff3E9DFE);
+final MaterialColor secondaryColor = MaterialColor(0xff3E9DFE, color);
+final MaterialColor tertiaryColor = MaterialColor(0xffEEF6FE, color);
 final Color primaryDarkBlue = Color(0xff4C5C76);

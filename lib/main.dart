@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_journal/contants/theme.dart';
-import 'package:my_journal/screens/app/HomePage.dart';
+import 'package:my_journal/contants/app/HomeNavigator.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarBrightness: Brightness.dark
+      statusBarBrightness: Brightness.light
   ));
   runApp(MyApp());
 }
