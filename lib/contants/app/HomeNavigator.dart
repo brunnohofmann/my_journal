@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
         }),
         items: [
           BottomNavyBarItem(
-            icon: Icon(Icons.apps),
+            icon: Icon(Icons.home),
             title: Text('Home'),
             activeColor: secondaryColor,
             textAlign: TextAlign.center,
