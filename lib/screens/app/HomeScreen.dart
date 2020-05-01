@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:my_journal/components/mascot.dart';
+import 'package:my_journal/components/typography/title.dart';
 import 'package:my_journal/contants/theme.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -9,19 +11,30 @@ class HomeScreen extends StatelessWidget {
 
     return Stack(children: [
       Container(
+        padding: EdgeInsets.only(left: 20, top: 20),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Expanded(
               flex: 4,
-              child: Container(),
+              child: SafeArea(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        padding: EdgeInsets.only(bottom: 10), child: Mascot()),
+                    CustomTitle(title: 'Hello Brunno!'),
+                    CustomTitle(title: 'How have you been today?')
+                  ],
+                ),
+              ),
             ),
             Expanded(
               child: Container(
                 color: tertiaryColor,
                 child: SafeArea(
                   child: Column(
-                    children: <Widget>[
+                    children: [
                       IconButton(
                         color: secondaryColor,
                         icon: Icon(Icons.add),
@@ -39,13 +52,13 @@ class HomeScreen extends StatelessWidget {
       ),
       Positioned(
         height: _screenHeight * .60,
-        top: _screenHeight * .20,
+        bottom: _screenHeight * 0.05,
         left: 30,
         right: 0,
         child: Container(
           child: Swiper(
             itemBuilder: (BuildContext context, int index) {
-              return new Image.network(
+              return Image.network(
                 "https://live.staticflickr.com/7796/18057146478_782b02bf3a_b.jpg",
                 fit: BoxFit.fill,
               );
