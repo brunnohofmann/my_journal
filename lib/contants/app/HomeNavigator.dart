@@ -1,7 +1,7 @@
-import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:my_journal/contants/theme.dart';
 import 'package:my_journal/screens/app/HomeScreen.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -14,51 +14,57 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int currentIndex = 0;
-  int _counter = 0;
+  PersistentTabController _controller;
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _controller = PersistentTabController(initialIndex: 0);
   }
+
+  List<Widget> _buildScreens() {
+    return [HomeScreen(), Text('tela 2'), HomeScreen()];
+  }
+
+  List<PersistentBottomNavBarItem> _navBarsItems() {
+    return [
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.home),
+        title: ("Home"),
+        activeColor: secondaryColor,
+        inactiveColor: Colors.grey,
+        isTranslucent: false,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.search),
+        title: ("Search"),
+        activeColor: secondaryColor,
+        inactiveColor: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.settings),
+        title: ("Settings"),
+        activeColor: secondaryColor,
+        inactiveColor: Colors.grey,
+      ),
+    ];
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: HomeScreen(),
-      bottomNavigationBar: BottomNavyBar(
-        selectedIndex: currentIndex,
-        showElevation: false,
-        backgroundColor: Colors.transparent,
-        itemCornerRadius: 10,
-        curve: Curves.easeIn,
-        onItemSelected: (index) => setState(() {
-          currentIndex = index;
-        }),
-        items: [
-          BottomNavyBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Home'),
-            activeColor: secondaryColor,
-            textAlign: TextAlign.center,
-          ),
-          BottomNavyBarItem(
-            icon: Icon(Icons.assignment),
-            title: Text(
-              'Records',
-            ),
-            activeColor: secondaryColor,
-            textAlign: TextAlign.center,
-          ),
-          BottomNavyBarItem(
-            icon: Icon(Icons.person),
-            title: Text('Profile'),
-            activeColor: secondaryColor,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+    return PersistentTabView(
+      controller: _controller,
+      items: _navBarsItems(),
+      screens: _buildScreens(),
+      showElevation: false,
+      confineInSafeArea: true,
+      handleAndroidBackButtonPress: true,
+      iconSize: 26.0,
+      navBarStyle: NavBarStyle.style5, // Choose the nav bar style with this property
+      onItemSelected: (index) {
+        print(index);
+      },
     );
   }
 }

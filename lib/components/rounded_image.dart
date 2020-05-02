@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class RoundedImage extends StatelessWidget {
-  final String imageURL;
+  final File imageURL;
 
   const RoundedImage({Key key, this.imageURL}) : super(key: key);
 
@@ -13,7 +15,7 @@ class RoundedImage extends StatelessWidget {
       height: 400,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
-        child: Image.network(
+        child: Image.file(
           imageURL,
           fit: BoxFit.cover,
         ),

@@ -1,16 +1,67 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:my_journal/components/button.dart';
 import 'package:my_journal/components/rounded_image.dart';
 import 'package:my_journal/components/typography/title.dart';
 import 'package:my_journal/contants/records/form_text.dart';
 import 'package:my_journal/contants/records/form_title.dart';
 import 'package:my_journal/contants/theme.dart';
+import 'package:my_journal/helpers/navigation.dart';
+import 'package:my_journal/model/record.dart';
+import 'package:my_journal/repositories/records_repository.dart';
 
-class NewRecordScreen extends StatelessWidget {
+class NewRecordScreen extends StatefulWidget {
+  @override
+  _NewRecordScreenState createState() => _NewRecordScreenState();
+}
+
+class _NewRecordScreenState extends State<NewRecordScreen> {
+  List<File> _images = new List<File>();
+
   final _titleController = TextEditingController();
   final _textController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  Widget AddImages() {
+  DateTime _tDate = DateTime.now();
+  bool _isLoading = false;
+
+  _submitRecord(BuildContext context) async {
+    Record newRecord = Record(
+      text: _textController.text,
+      title: _titleController.text,
+    );
+    newRecord.date = _tDate;
+
+    print(_textController.text);
+
+    if (_formKey.currentState.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      await addRecord(newRecord);
+
+      setState(() {
+        _isLoading = false;
+      });
+      goHome(context);
+    }
+  }
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    _images.add(image);
+
+    print(image.absolute);
+
+    setState(() {
+      _images = _images;
+    });
+  }
+
+  Widget _addImages() {
     return Container(
         padding: EdgeInsets.only(top: 24),
         child: Column(children: <Widget>[
@@ -24,71 +75,83 @@ class NewRecordScreen extends StatelessWidget {
                 IconButton(
                   color: secondaryColor,
                   icon: Icon(Icons.add),
-                  onPressed: () {
-                    print('caraio');
-                  },
+                  onPressed: getImage,
                 )
               ],
             ),
           ),
-          Container(
-            height: 400,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
+          AnimatedContainer(
+            duration: Duration(milliseconds: 200),
+            height: _images.length > 0 ? 400 : 0,
+            child: ListView(scrollDirection: Axis.horizontal, children: [
+              for (var item in _images)
                 RoundedImage(
-                  imageURL:
-                      "https://live.staticflickr.com/7796/18057146478_782b02bf3a_b.jpg",
-                ),RoundedImage(
-                  imageURL:
-                      "https://live.staticflickr.com/7796/18057146478_782b02bf3a_b.jpg",
-                ),RoundedImage(
-                  imageURL:
-                      "https://live.staticflickr.com/7796/18057146478_782b02bf3a_b.jpg",
-                ),RoundedImage(
-                  imageURL:
-                      "https://live.staticflickr.com/7796/18057146478_782b02bf3a_b.jpg",
-                ),RoundedImage(
-                  imageURL:
-                      "https://live.staticflickr.com/7796/18057146478_782b02bf3a_b.jpg",
+                  imageURL: item,
                 ),
-              ],
-            ),
+            ]),
           ),
         ]));
+  }
+
+  Widget _newRecordForm() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: FormTitle(
+              controller: _titleController,
+              isRequired: true,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 20, right: 20),
+            child: FormText(
+              controller: _textController,
+              isRequired: true,
+            ),
+          ),
+          _addImages(),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: EdgeInsets.only(top: 24),
-        child: ListView(
-          physics: BouncingScrollPhysics(),
-          padding: EdgeInsets.only(top: 40, bottom: 70),
-          children: [
-            Container(
-              padding: EdgeInsets.only(left: 20, right: 20),
-              child: FormTitle(
-                controller: _titleController,
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 20, right: 20),
-              child: FormText(
-                controller: _textController,
-              ),
-            ),
-            AddImages(),
-            Container(
-                padding: EdgeInsets.only(top: 24, left: 20, right: 20),
-                child: CustomButton(text: 'Save'))
-          ],
-        ),
+      body: ListView(
+        physics: BouncingScrollPhysics(),
+        padding: EdgeInsets.only(top: 40, bottom: 70),
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: SizedBox(
+                    width: 50,
+                    height: 5,
+                    child: Container(
+                      color: secondaryColor,
+                    ),
+                  )),
+            ],
+          ),
+          _newRecordForm(),
+
+        ],
+      ),
+      bottomNavigationBar: SafeArea(
+        child: Container(
+            padding: EdgeInsets.only(top: 24, left: 20, right: 20),
+            child: CustomButton(
+              text: 'Save',
+              onPressed: () => _submitRecord(context),
+              isLoading: _isLoading,
+            )),
       ),
     );
   }
-
-//  //////////////////////////////VALIDATOR
-
 }

@@ -20,7 +20,7 @@ class FormText extends StatelessWidget {
         style: TextStyle(
             fontSize: 15,
             color: primaryDarkBlue,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.normal
         ),
         decoration: InputDecoration(
           border:InputBorder.none,

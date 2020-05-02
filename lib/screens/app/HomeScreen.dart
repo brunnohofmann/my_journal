@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:my_journal/components/mascot.dart';
+import 'package:my_journal/components/rounded_image.dart';
 import 'package:my_journal/components/typography/title.dart';
 import 'package:my_journal/contants/theme.dart';
+import 'package:my_journal/helpers/navigation.dart';
+import 'package:my_journal/screens/records/new_record.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -11,7 +14,8 @@ class HomeScreen extends StatelessWidget {
 
     return Stack(children: [
       Container(
-        padding: EdgeInsets.only(left: 20, top: 20),
+        color: Colors.white,
+        padding: EdgeInsets.only(left: 20),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -39,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                         color: secondaryColor,
                         icon: Icon(Icons.add),
                         onPressed: () {
-                          print('uiadhd');
+                          push(context, NewRecordScreen());
                         },
                       )
                     ],
@@ -59,8 +63,7 @@ class HomeScreen extends StatelessWidget {
           child: Swiper(
             itemBuilder: (BuildContext context, int index) {
               return Image.network(
-                "https://live.staticflickr.com/7796/18057146478_782b02bf3a_b.jpg",
-                fit: BoxFit.fill,
+                    "https://live.staticflickr.com/7796/18057146478_782b02bf3a_b.jpg",
               );
             },
             itemCount: 10,

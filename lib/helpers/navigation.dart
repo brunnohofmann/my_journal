@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.widget.dart';
 
-Future push(BuildContext context, Widget page) {
-  return Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-    return page;
-  }));
+Future push(BuildContext context, Widget page, {bool withNavBar = false}) {
+  return pushNewScreen(context, screen: page, withNavBar: withNavBar);
 }
 
 void pop(BuildContext context) {

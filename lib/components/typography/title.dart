@@ -5,7 +5,7 @@ class CustomTitle extends StatelessWidget {
   final String title;
   final FontWeight weight;
 
-  const CustomTitle({Key key, this.title, this.weight = null})
+  const CustomTitle({Key key, this.title, this.weight})
       : super(key: key);
 
   @override
