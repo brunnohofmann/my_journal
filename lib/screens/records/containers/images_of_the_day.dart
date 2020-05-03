@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:my_journal/components/rounded_image.dart';
 import 'package:my_journal/components/typography/title.dart';
 import 'package:my_journal/contants/theme.dart';
+import 'package:my_journal/helpers/images.dart';
 
 class ImagesOfTheDay extends StatelessWidget {
 
@@ -15,8 +15,7 @@ class ImagesOfTheDay extends StatelessWidget {
   const ImagesOfTheDay({Key key, this.onGetImage, this.images}) : super(key: key);
 
   Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
+    var image = await getImageFromGallery();
     onGetImage(image);
   }
 

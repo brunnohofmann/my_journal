@@ -7,6 +7,7 @@ import 'package:my_journal/components/typography/title.dart';
 import 'package:my_journal/contants/records/form_text.dart';
 import 'package:my_journal/contants/records/form_title.dart';
 import 'package:my_journal/contants/theme.dart';
+import 'package:my_journal/helpers/images.dart';
 import 'package:my_journal/helpers/navigation.dart';
 import 'package:my_journal/helpers/snackbar.dart';
 import 'package:my_journal/model/record.dart';
@@ -21,13 +22,14 @@ class NewRecordScreen extends StatefulWidget {
 
 class _NewRecordScreenState extends State<NewRecordScreen> {
   List<File> _images = new List<File>();
+  File _cover;
 
   final _titleController = TextEditingController();
   final _textController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   ScrollController _controller;
-
   DateTime _tDate = DateTime.now();
+
   bool _isLoading = false;
   bool _isStacked = false;
 
@@ -48,8 +50,6 @@ class _NewRecordScreenState extends State<NewRecordScreen> {
       title: _titleController.text,
     );
     newRecord.date = _tDate;
-
-    print(_textController.text);
 
     if (_formKey.currentState.validate()) {
       setState(() {
@@ -98,8 +98,7 @@ class _NewRecordScreenState extends State<NewRecordScreen> {
                       child: Container(
                         color: secondaryColor,
                       ),
-                    )
-                ),
+                    )),
               ),
             ],
           ),
@@ -120,6 +119,13 @@ class _NewRecordScreenState extends State<NewRecordScreen> {
     );
   }
 
+  Future _setRecordCover() async {
+    var cover = await getImageFromGallery();
+    setState(() {
+      _cover = cover;
+    });
+  }
+
   Widget _screenHeader() {
     return SliverAppBar(
         stretch: true,
@@ -127,47 +133,83 @@ class _NewRecordScreenState extends State<NewRecordScreen> {
         expandedHeight: 300,
         iconTheme: IconThemeData(color: Colors.white),
         automaticallyImplyLeading: false,
+        actions: <Widget>[
+          Container(
+              padding: EdgeInsets.all(11),
+              child: CircularButton(
+                onPressed: _setRecordCover,
+                icon: Icons.image,
+              )),
+          Container(
+              padding: EdgeInsets.all(11),
+              child: CircularButton(
+                onPressed: () {
+                  setState(() {
+                    _cover = null;
+                  });
+                },
+                icon: Icons.restore_from_trash,
+              )),
+        ],
         leading: Container(
           padding: EdgeInsets.all(11),
-          child: CircularButton(onPressed: () => pop(context), icon: Icons.keyboard_backspace,),
+          child: CircularButton(
+            onPressed: () => pop(context),
+            icon: Icons.keyboard_backspace,
+          ),
         ),
-        bottom: PreferredSize(                       // Add this code
-          preferredSize: Size.fromHeight(60.0),      // Add this code
-          child: Text(''),                           // Add this code
+        bottom: PreferredSize(
+          // Add this code
+          preferredSize: Size.fromHeight(60.0), // Add this code
+          child: Text(''), // Add this code
         ),
         flexibleSpace: FlexibleSpaceBar(
-            stretchModes: <StretchMode>[
-              StretchMode.zoomBackground,
-              StretchMode.fadeTitle,
-            ],
-            centerTitle: false,
-            titlePadding: EdgeInsets.only(left: 20),
-            title: AnimatedContainer(
-              duration: Duration(milliseconds: 200),
-              padding: EdgeInsets.only(left: _isStacked ? 30 : 0),
-              child: Stack(children: [
-                Container(
-                  padding: EdgeInsets.only(top: 30),
-                  child: FormTitle(
-                    controller: _titleController,
-                    isRequired: true,
-                  ),
+          stretchModes: <StretchMode>[
+            StretchMode.zoomBackground,
+            StretchMode.fadeTitle,
+          ],
+          centerTitle: false,
+          titlePadding: EdgeInsets.only(left: 20),
+          title: AnimatedContainer(
+            duration: Duration(milliseconds: 200),
+            padding: EdgeInsets.only(left: _isStacked ? 30 : 0),
+            child: Stack(children: [
+              Container(
+                padding: EdgeInsets.only(top: 30),
+                child: FormTitle(
+                  controller: _titleController,
+                  isRequired: true,
                 ),
-                DateField(
-                  onChooseDate: onChooseDate,
-                  date: _tDate,
-                ),
-              ]),
-            ),
-            background: ClipRRect(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16)),
-              child: Image.network(
-                "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
-                fit: BoxFit.cover,
               ),
-            )));
+              DateField(
+                onChooseDate: onChooseDate,
+                date: _tDate,
+              ),
+            ]),
+          ),
+          background: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(16)),
+                color: primaryColor),
+            child: _cover == null
+                ? GestureDetector(
+                    onTap: _setRecordCover,
+                    child: Container(
+                      padding: EdgeInsets.all(70),
+                      child: Image.asset(
+                        'assets/imgs/interface.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  )
+                : Image.file(
+                    _cover,
+                    fit: BoxFit.cover,
+                  ),
+          ),
+        ));
   }
 
   @override
