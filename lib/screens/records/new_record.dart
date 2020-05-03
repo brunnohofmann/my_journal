@@ -1,16 +1,18 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:my_journal/components/button.dart';
-import 'package:my_journal/components/rounded_image.dart';
+import 'package:my_journal/components/circular_button.dart';
 import 'package:my_journal/components/typography/title.dart';
 import 'package:my_journal/contants/records/form_text.dart';
 import 'package:my_journal/contants/records/form_title.dart';
 import 'package:my_journal/contants/theme.dart';
 import 'package:my_journal/helpers/navigation.dart';
+import 'package:my_journal/helpers/snackbar.dart';
 import 'package:my_journal/model/record.dart';
 import 'package:my_journal/repositories/records_repository.dart';
+import 'package:my_journal/screens/records/containers/date_field.dart';
+import 'package:my_journal/screens/records/containers/images_of_the_day.dart';
 
 class NewRecordScreen extends StatefulWidget {
   @override
@@ -23,9 +25,22 @@ class _NewRecordScreenState extends State<NewRecordScreen> {
   final _titleController = TextEditingController();
   final _textController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  ScrollController _controller;
 
   DateTime _tDate = DateTime.now();
   bool _isLoading = false;
+  bool _isStacked = false;
+
+  @override
+  void initState() {
+    _controller = ScrollController();
+    _controller.addListener(() {
+      setState(() {
+        _isStacked = _controller.offset >= 190 ? true : false;
+      });
+    });
+    super.initState();
+  }
 
   _submitRecord(BuildContext context) async {
     Record newRecord = Record(
@@ -46,111 +61,143 @@ class _NewRecordScreenState extends State<NewRecordScreen> {
       setState(() {
         _isLoading = false;
       });
+      showToast(text: 'A new entry was created');
       goHome(context);
     }
   }
 
-  Future getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  onChooseDate(DateTime date) {
+    setState(() {
+      _tDate = date;
+    });
+  }
+
+  Future onGetImageOfTheDay(File image) async {
     _images.add(image);
-
-    print(image.absolute);
-
     setState(() {
       _images = _images;
     });
   }
 
-  Widget _addImages() {
-    return Container(
-        padding: EdgeInsets.only(top: 24),
-        child: Column(children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                CustomTitle(
-                    title: 'Images of the Day', weight: FontWeight.bold),
-                IconButton(
-                  color: secondaryColor,
-                  icon: Icon(Icons.add),
-                  onPressed: getImage,
-                )
-              ],
-            ),
-          ),
-          AnimatedContainer(
-            duration: Duration(milliseconds: 200),
-            height: _images.length > 0 ? 400 : 0,
-            child: ListView(scrollDirection: Axis.horizontal, children: [
-              for (var item in _images)
-                RoundedImage(
-                  imageURL: item,
-                ),
-            ]),
-          ),
-        ]));
-  }
-
   Widget _newRecordForm() {
-    return Form(
-      key: _formKey,
+    return Container(
+      padding: EdgeInsets.all(20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: FormTitle(
-              controller: _titleController,
-              isRequired: true,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(top: 10, bottom: 20),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: SizedBox(
+                      width: 50,
+                      height: 5,
+                      child: Container(
+                        color: secondaryColor,
+                      ),
+                    )
+                ),
+              ),
+            ],
           ),
-          Container(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: FormText(
-              controller: _textController,
-              isRequired: true,
-            ),
+          CustomTitle(
+            title: "Today's Story",
+            weight: FontWeight.bold,
           ),
-          _addImages(),
+          FormText(
+            controller: _textController,
+            isRequired: true,
+          ),
+          ImagesOfTheDay(
+            images: _images,
+            onGetImage: onGetImageOfTheDay,
+          ),
         ],
       ),
     );
   }
 
+  Widget _screenHeader() {
+    return SliverAppBar(
+        stretch: true,
+        backgroundColor: _isStacked ? secondaryColor : Colors.white,
+        expandedHeight: 300,
+        iconTheme: IconThemeData(color: Colors.white),
+        automaticallyImplyLeading: false,
+        leading: Container(
+          padding: EdgeInsets.all(11),
+          child: CircularButton(onPressed: () => pop(context), icon: Icons.keyboard_backspace,),
+        ),
+        bottom: PreferredSize(                       // Add this code
+          preferredSize: Size.fromHeight(60.0),      // Add this code
+          child: Text(''),                           // Add this code
+        ),
+        flexibleSpace: FlexibleSpaceBar(
+            stretchModes: <StretchMode>[
+              StretchMode.zoomBackground,
+              StretchMode.fadeTitle,
+            ],
+            centerTitle: false,
+            titlePadding: EdgeInsets.only(left: 20),
+            title: AnimatedContainer(
+              duration: Duration(milliseconds: 200),
+              padding: EdgeInsets.only(left: _isStacked ? 30 : 0),
+              child: Stack(children: [
+                Container(
+                  padding: EdgeInsets.only(top: 30),
+                  child: FormTitle(
+                    controller: _titleController,
+                    isRequired: true,
+                  ),
+                ),
+                DateField(
+                  onChooseDate: onChooseDate,
+                  date: _tDate,
+                ),
+              ]),
+            ),
+            background: ClipRRect(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(16),
+                  bottomRight: Radius.circular(16)),
+              child: Image.network(
+                "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
+                fit: BoxFit.cover,
+              ),
+            )));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        physics: BouncingScrollPhysics(),
-        padding: EdgeInsets.only(top: 40, bottom: 70),
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: SizedBox(
-                    width: 50,
-                    height: 5,
-                    child: Container(
-                      color: secondaryColor,
-                    ),
-                  )),
-            ],
-          ),
-          _newRecordForm(),
-
-        ],
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-            padding: EdgeInsets.only(top: 24, left: 20, right: 20),
-            child: CustomButton(
-              text: 'Save',
-              onPressed: () => _submitRecord(context),
-              isLoading: _isLoading,
-            )),
+    return Form(
+      key: _formKey,
+      child: Scaffold(
+        body: CustomScrollView(
+          controller: _controller,
+          physics: BouncingScrollPhysics(),
+          slivers: [
+            _screenHeader(),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  _newRecordForm(),
+                ],
+              ),
+            )
+          ],
+        ),
+        bottomNavigationBar: SafeArea(
+          child: Container(
+              padding: EdgeInsets.only(top: 24, left: 20, right: 20),
+              child: CustomButton(
+                text: 'Save',
+                onPressed: () => _submitRecord(context),
+                isLoading: _isLoading,
+              )),
+        ),
       ),
     );
   }

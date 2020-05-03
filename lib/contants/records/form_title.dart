@@ -13,11 +13,11 @@ class FormTitle extends StatelessWidget {
     return Container(
       child: TextFormField(
         controller: this.controller,
-        maxLines: 3,
+        maxLines: 1,
         minLines: 1,
         style: TextStyle(
-            fontSize: 22,
-            color: primaryDarkBlue,
+            fontSize: 18,
+            color: Colors.white,
             fontWeight: FontWeight.bold
         ),
         cursorColor: primaryColor,
@@ -26,6 +26,7 @@ class FormTitle extends StatelessWidget {
         decoration: InputDecoration(
           border:InputBorder.none,
           hintText: "Title",
+          hintStyle: TextStyle(color: Colors.white)
         ),
       ),
     );

@@ -6,7 +6,7 @@ const RECORDS_PATH = "records";
 
 Future<Record> getRecord(String id) async{
   DocumentSnapshot snapshot = await getDocument(RECORDS_PATH, id);
-  Record record = await Record.fromDocumentSnapshot(snapshot);
+  Record record = Record.fromDocumentSnapshot(snapshot);
   return record;
 }
 

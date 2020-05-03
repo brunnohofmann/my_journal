@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:my_journal/components/mascot.dart';
-import 'package:my_journal/components/rounded_image.dart';
 import 'package:my_journal/components/typography/title.dart';
 import 'package:my_journal/contants/theme.dart';
 import 'package:my_journal/helpers/navigation.dart';
