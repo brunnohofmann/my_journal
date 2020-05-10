@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_journal/contants/theme.dart';
-import 'package:my_journal/contants/app/HomeNavigator.dart';
+import 'package:my_journal/routes/root_page.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -22,6 +22,6 @@ class MyApp extends StatelessWidget {
           primarySwatch: primaryColor,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: HomePage());
+        home: RootPage());
   }
 }

@@ -30,6 +30,7 @@ dependencies:
   firebase_core: ^0.4.4+3
   firebase: ^7.3.0
   cloud_firestore: ^0.13.5
+  firebase_auth: ^0.16.0
   date_format: ^1.0.6
   fluttertoast: ^4.0.1
   animated_floatactionbuttons: ^0.1.0
