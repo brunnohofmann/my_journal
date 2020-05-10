@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:my_journal/components/button.dart';
 import 'package:my_journal/components/mascot.dart';
+import 'package:my_journal/components/typography/title.dart';
 import 'package:my_journal/contants/theme.dart';
 import 'package:my_journal/services/authentication.dart';
 
 class LoginSignupPage extends StatefulWidget {
   LoginSignupPage();
-
 
   @override
   State<StatefulWidget> createState() => new _LoginSignupPageState();
@@ -160,7 +160,10 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        backgroundColor: secondaryColor,
+        backgroundColor: primaryColor,
+        bottomNavigationBar: SafeArea(
+            child: Container(
+                padding: EdgeInsets.all(20), child: showPrimaryButton())),
         body: Stack(
           children: <Widget>[
             Container(
@@ -171,9 +174,19 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                     shrinkWrap: true,
                     children: <Widget>[
                       showLogo(),
+                      CustomTitle(
+                        title: 'Hi! Glad to see you again.',
+                        color: Colors.white,
+                        align: TextAlign.center,
+                      ),
+                      CustomTitle(
+                        title: 'But... who are you?',
+                        color: Colors.white,
+                        align: TextAlign.center,
+                        size: 14,
+                      ),
                       showEmailInput(),
                       showPasswordInput(),
-                      showPrimaryButton(),
                       showErrorMessage(),
                     ],
                   ),
