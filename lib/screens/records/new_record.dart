@@ -31,14 +31,16 @@ class _NewRecordScreenState extends State<NewRecordScreen> {
   DateTime _tDate = DateTime.now();
 
   bool _isLoading = false;
-  bool _isStacked = false;
+  bool _isStackedOnLeadingBackground = false;
+  bool _ignoreCover = false;
 
   @override
   void initState() {
     _controller = ScrollController();
     _controller.addListener(() {
       setState(() {
-        _isStacked = _controller.offset >= 190 ? true : false;
+        _isStackedOnLeadingBackground =
+            _controller.offset >= 100 ? true : false;
       });
     });
     super.initState();
@@ -126,13 +128,20 @@ class _NewRecordScreenState extends State<NewRecordScreen> {
     });
   }
 
+  Color appBarBackground(){
+    if(_ignoreCover || _isStackedOnLeadingBackground){
+      return secondaryColor;
+    }
+
+    return Colors.white;
+  }
+
   Widget _screenHeader() {
     return SliverAppBar(
-        stretch: true,
-        backgroundColor: _isStacked ? secondaryColor : Colors.white,
-        expandedHeight: 300,
+        backgroundColor: appBarBackground(),
+        expandedHeight: _ignoreCover ? 0 : 300,
         iconTheme: IconThemeData(color: Colors.white),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         actions: <Widget>[
           Container(
               padding: EdgeInsets.all(11),
@@ -145,6 +154,9 @@ class _NewRecordScreenState extends State<NewRecordScreen> {
               child: CircularButton(
                 onPressed: () {
                   setState(() {
+                    if (_cover == null) {
+                      _ignoreCover = true;
+                    }
                     _cover = null;
                   });
                 },
@@ -172,7 +184,6 @@ class _NewRecordScreenState extends State<NewRecordScreen> {
           titlePadding: EdgeInsets.only(left: 20),
           title: AnimatedContainer(
             duration: Duration(milliseconds: 200),
-            padding: EdgeInsets.only(left: _isStacked ? 30 : 0),
             child: Stack(children: [
               Container(
                 padding: EdgeInsets.only(top: 30),
