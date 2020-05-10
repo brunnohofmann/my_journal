@@ -37,8 +37,6 @@ class _NewRecordFormState extends State<NewRecordForm> {
     );
     newRecord.date = _tDate;
 
-    print(_textController.text);
-
     if (_formKey.currentState.validate()) {
       setState(() {
         _isLoading = true;
@@ -56,8 +54,6 @@ class _NewRecordFormState extends State<NewRecordForm> {
   Future getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     _images.add(image);
-
-    print(image.absolute);
 
     setState(() {
       _images = _images;
