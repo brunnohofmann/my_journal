@@ -10,12 +10,13 @@ class AddRecordCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double _screenWidth = MediaQuery.of(context).size.width;
+
     return GestureDetector(
       onTap: () async{ push(context, NewRecordScreen());},
       child: Container(
-
         margin: EdgeInsets.only(right: 10, left: 20),
-        width: 300,
+        width: _screenWidth * .85,
         height: 400,
         child: Container(
           padding: EdgeInsets.all(80),

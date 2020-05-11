@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     double _screenHeight = MediaQuery.of(context).size.height;
+    double _screenWidth = MediaQuery.of(context).size.width;
 
     return Stack(children: [
       Container(
@@ -81,8 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
               return _images[index];
             },
             itemCount: _images.length,
-            itemWidth: 300.0,
-            itemHeight: 600.0,
+            itemWidth: _screenWidth * .85,
+            itemHeight: _screenHeight * .60,
             layout: SwiperLayout.TINDER,
           ),
         ),

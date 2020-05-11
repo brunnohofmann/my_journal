@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Record {
   String id;
   String text;
   String title;
+  File cover;
+  List<File> images;
+
   dynamic _date;
 
   Record({this.id, this.text, this.title});

@@ -34,6 +34,9 @@ dependencies:
   date_format: ^1.0.6
   fluttertoast: ^4.0.1
   animated_floatactionbuttons: ^0.1.0
+  firebase_storage: ^3.1.5
+  uuid: ^2.0.4
+  path: 1.6.4
 
 
   # The following adds the Cupertino Icons font to your application.

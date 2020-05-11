@@ -47,24 +47,36 @@ class _NewRecordScreenState extends State<NewRecordScreen> {
   }
 
   _submitRecord(BuildContext context) async {
-    Record newRecord = Record(
-      text: _textController.text,
-      title: _titleController.text,
-    );
-    newRecord.date = _tDate;
-
     if (_formKey.currentState.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
+      try {
+        setState(() {
+          _isLoading = true;
+        });
+        Record newRecord = Record(
+          text: _textController.text,
+          title: _titleController.text,
+        );
+        newRecord.date = _tDate;
+        if (_cover != null) {
+          newRecord.cover = _cover;
+        }
+        if(_images.length > 0){
+          newRecord.images = _images;
+        }
 
-      await addRecord(newRecord);
+        await addRecord(newRecord);
 
-      setState(() {
-        _isLoading = false;
-      });
-      showToast(text: 'A new entry was created');
-      goHome(context);
+        setState(() {
+          _isLoading = false;
+        });
+        showToast(text: 'A new entry was created');
+        goHome(context);
+      }catch(e){
+        showToast(text: "Help! We're in trouble! Hide and come back later, please: O");
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -124,6 +136,7 @@ class _NewRecordScreenState extends State<NewRecordScreen> {
   Future _setRecordCover() async {
     var cover = await getImageFromGallery();
     setState(() {
+      _ignoreCover=false;
       _cover = cover;
     });
   }
