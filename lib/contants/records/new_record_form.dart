@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:my_journal/components/button.dart';
+import 'package:my_journal/components/buttons/primary_button.dart';
 import 'package:my_journal/components/rounded_image.dart';
 import 'package:my_journal/components/typography/title.dart';
 import 'package:my_journal/contants/records/form_text.dart';

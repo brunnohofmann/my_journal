@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:my_journal/components/button.dart';
+import 'package:my_journal/components/buttons/primary_button.dart';
 import 'package:my_journal/components/circular_button.dart';
 import 'package:my_journal/components/typography/title.dart';
 import 'package:my_journal/contants/records/form_text.dart';

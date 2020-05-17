@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_journal/components/button.dart';
+import 'package:my_journal/components/buttons/secondary_button.dart';
 import 'package:my_journal/components/mascot.dart';
 import 'package:my_journal/components/typography/title.dart';
 import 'package:my_journal/contants/theme.dart';
@@ -76,13 +76,16 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   Widget showErrorMessage() {
     if (_errorMessage.length > 0 && _errorMessage != null) {
-      return new Text(
-        _errorMessage,
-        style: TextStyle(
-            fontSize: 13.0,
-            color: Colors.red,
-            height: 1.0,
-            fontWeight: FontWeight.w300),
+      return Container(
+        padding: EdgeInsets.only(top: 16),
+        child: Text(
+          _errorMessage,
+          style: TextStyle(
+              fontSize: 13.0,
+              color: Colors.red,
+              height: 1.0,
+              fontWeight: FontWeight.w300),
+        ),
       );
     } else {
       return new Container(
@@ -110,15 +113,15 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
       child: new TextFormField(
         maxLines: 1,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: primaryDarkBlue),
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
         decoration: InputDecoration(
             enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
+              borderSide: BorderSide(color:secondaryColor),
             ),
             hintText: 'Email',
-            hintStyle: TextStyle(color: Colors.white)),
+            hintStyle: TextStyle(color: secondaryColor)),
         validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
         onSaved: (value) => _email = value.trim(),
       ),
@@ -132,13 +135,13 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         maxLines: 1,
         obscureText: true,
         autofocus: false,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: secondaryColor),
         decoration: new InputDecoration(
             enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
+              borderSide: BorderSide(color: secondaryColor),
             ),
             hintText: 'Password',
-            hintStyle: TextStyle(color: Colors.white)),
+            hintStyle: TextStyle(color: secondaryColor)),
         validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
         onSaved: (value) => _password = value.trim(),
       ),
@@ -150,7 +153,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),
         child: SizedBox(
             height: 40.0,
-            child: CustomButton(
+            child: SecondaryButton(
               text: 'Login',
               onPressed: validateAndSubmit,
               isLoading: _isLoading,
@@ -160,7 +163,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        backgroundColor: primaryColor,
+        backgroundColor: tertiaryColor,
         bottomNavigationBar: SafeArea(
             child: Container(
                 padding: EdgeInsets.all(20), child: showPrimaryButton())),
@@ -176,12 +179,12 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                       showLogo(),
                       CustomTitle(
                         title: 'Hi! Glad to see you again.',
-                        color: Colors.white,
+                        color: primaryDarkBlue,
                         align: TextAlign.center,
                       ),
                       CustomTitle(
                         title: 'But... who are you?',
-                        color: Colors.white,
+                        color: secondaryColor,
                         align: TextAlign.center,
                         size: 14,
                       ),
