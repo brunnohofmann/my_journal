@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: _images.length,
             itemWidth: _screenWidth * .85,
             itemHeight: _screenHeight * .60,
-            layout: SwiperLayout.TINDER,
+            layout: SwiperLayout.STACK,
           ),
         ),
       ),
