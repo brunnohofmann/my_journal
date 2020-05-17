@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:my_journal/components/add_record_card.dart';
 import 'package:my_journal/components/mascot.dart';
-import 'package:my_journal/components/rounded_image.dart';
+import 'package:my_journal/components/record_cover_card.dart';
 import 'package:my_journal/components/typography/title.dart';
 import 'package:my_journal/contants/theme.dart';
 import 'package:my_journal/helpers/navigation.dart';
+import 'package:my_journal/repositories/records_repository.dart';
 import 'package:my_journal/screens/records/new_record.dart';
-import 'package:my_journal/services/authentication.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -21,7 +21,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     _images.add(AddRecordCard());
+    getCoverRecords();
     super.initState();
+  }
+
+  getCoverRecords() async{
+    var records = await getCoverRecordsService();
+    records.documents.forEach((record) {
+      _images.add(RecordCoverCard(record: record.data));
+    });
+
+    setState(() {
+      _images: _images;
+    });
   }
 
   @override

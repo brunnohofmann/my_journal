@@ -48,3 +48,9 @@ Stream<QuerySnapshot> streamRecords({limit, search}) {
   return getStreamCollection(RECORDS_PATH,
       orderBy: 'date', descending: true, limit: limit);
 }
+
+Future<QuerySnapshot> getCoverRecordsService({limit, search}) async {
+  return await Firestore.instance.collection(RECORDS_PATH).where('cover', isGreaterThan: '').limit(5).getDocuments();
+}
+
+
