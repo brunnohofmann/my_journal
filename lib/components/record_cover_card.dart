@@ -18,10 +18,12 @@ class RecordCoverCard extends StatelessWidget {
           children: [
             Text(
               record['title'],
+              maxLines: 1,
+            overflow: TextOverflow.ellipsis,
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 22,
+                  fontSize: 28,
                   shadows: [
                     Shadow(
                       offset: Offset(2, 2),
@@ -30,11 +32,18 @@ class RecordCoverCard extends StatelessWidget {
                     )
                   ]),
             ),
-            CustomTitle(
-              title:
-                  formatDate(record['date'].toDate(), [dd, '/', M, '/', yyyy]),
-              color: Colors.white,
-              size: 16,
+            Text(
+              formatDate(record['date'].toDate(), [dd, '-', M, '-', yyyy]),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  shadows: [
+                    Shadow(
+                      offset: Offset(2, 2),
+                      blurRadius: 3.0,
+                      color: Color.fromARGB(50, 0, 0, 0),
+                    )
+                  ]),
             ),
           ],
         ));
