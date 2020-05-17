@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:my_journal/components/add_record_card.dart';
+import 'package:my_journal/components/circular_button.dart';
 import 'package:my_journal/components/mascot.dart';
 import 'package:my_journal/components/record_cover_card.dart';
 import 'package:my_journal/components/typography/title.dart';
@@ -68,9 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: SafeArea(
                   child: Column(
                     children: [
-                      IconButton(
-                        color: secondaryColor,
-                        icon: Icon(Icons.add),
+                      CircularButton(
+                        icon: Icons.add,
                         onPressed: () {
                           push(context, NewRecordScreen());
                         },
