@@ -1,16 +1,24 @@
-# my_journal
+# Gladly
 
-A journal app made with Flutter
+This is a personal journal made with Flutter and Firebase. 
+Feel free to fork and use this project. 
+
+<img src="https://miro.medium.com/max/2000/1*fFUNao6czFKfm4BWTmh8UA.jpeg" width="300" />
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+First you need to create a Firebase Project.
 
-A few resources to get you started if this is your first Flutter project:
+1 - [Follow this article on step 1 and 2](https://firebase.google.com/docs/web/setup?hl=pt-br)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+2 - Activate Firebase Authentication with email and password
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+3 - Activate Firebase Firestore
+
+4 - Update Firestore Rules to ensure that you personal information are safe. [Click here for more information](https://firebase.google.com/docs/firestore/security/get-started)
+
+5 - Create a Android Project (on firebase Console) and follow the steps to create your google-services.json file. You need to put it in android/app/ folder
+
+6 - Create a IOS Project  (on firebase Console) and follow the steps to create your GoogleService-Info.plist file. You need to put it in ios/Runner folder
+
+7 - open this project on Android Studio and enjoy. 
