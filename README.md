@@ -3,7 +3,7 @@
 This is a personal journal made with Flutter and Firebase. 
 Feel free to fork and use this project. 
 
-<img src="https://miro.medium.com/max/2000/1*fFUNao6czFKfm4BWTmh8UA.jpeg" width="300" />
+<img src="https://miro.medium.com/max/2000/1*fFUNao6czFKfm4BWTmh8UA.jpeg" width="800" />
 
 ## Getting Started
 
